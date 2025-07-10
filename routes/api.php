@@ -31,8 +31,9 @@ Route::prefix('admin')->group(function () {
         Route::get('me', [App\Http\Controllers\Admin\AuthController::class, 'me']);
 
         // User Management
-        Route::apiResource('users', UserController::class);
         Route::get('users/stats', [UserController::class, 'stats']);
+        Route::apiResource('users', UserController::class);
+       
 
         // Country Management
         Route::apiResource('countries', CountryController::class);
