@@ -22,7 +22,7 @@ class CountryController extends Controller
             $search = $request->search;
             $query->where('name', 'like', "%{$search}%");
         }
-
+        
         // Load cities count
         $query->withCount('cities');
 
