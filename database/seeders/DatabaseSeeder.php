@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             TripSeeder::class,
             TripAreaSeeder::class,
+            TaskSeeder::class,
+            BudgetLogSeeder::class
         ]);
     }
 }
