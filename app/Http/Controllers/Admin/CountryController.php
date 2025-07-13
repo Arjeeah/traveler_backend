@@ -20,7 +20,8 @@ class CountryController extends Controller
         // Search functionality
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where('name', 'like', "%{$search}%");
+            // Convert search to lowercase and use case-insensitive comparison
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
         
         // Load cities count

@@ -18,15 +18,16 @@ class AreaController extends Controller
         $query = Area::with('city.country');
 
         // Search functionality
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        }
-
-        // Filter by city
         if ($request->has('city_id')) {
             $query->where('city_id', $request->city_id);
+        }
+
+        // Then apply search within the city filter
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
         }
 
         // Filter by recommendation status
