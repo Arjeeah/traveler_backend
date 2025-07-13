@@ -29,7 +29,8 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'user_type' => 'user', 
+            'user_type' => 'user',
+            'status' => 'active', // Default status for new users
             'sex' => $validated['sex'] ?? null,
             'birth_date' => $validated['birth_date'] ?? null,
         ]);
@@ -62,6 +63,19 @@ class AuthController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
+
+        // Check user status
+        if ($user->status !== 'active') {
+            $statusMessages = [
+                'inactive' => 'Your account is currently inactive. Please contact support.',
+                'banned' => 'Your account has been banned. Please contact support.',
+            ];
+
+            throw ValidationException::withMessages([
+                'email' => [$statusMessages[$user->status] ?? 'Your account access has been restricted.'],
+            ]);
+        }
+
 
         // Create token for the user
         $token = $user->createToken('auth_token')->plainTextToken;

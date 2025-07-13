@@ -30,6 +30,11 @@ class UserController extends Controller
             $query->where('user_type', $request->user_type);
         }
 
+        // Filter by status
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
         // Simple pagination
         $users = $query->paginate(15);
 
@@ -76,6 +81,7 @@ class UserController extends Controller
             'email' => ['sometimes', 'required', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => 'sometimes|nullable|string|min:8',
             'user_type' => 'sometimes|required|in:admin,user',
+            'status' => 'sometimes|required|in:active,inactive,banned',
             'sex' => 'sometimes|nullable|in:male,female',
             'birth_date' => 'sometimes|nullable|date|before:today',
         ]);
@@ -127,6 +133,9 @@ class UserController extends Controller
             'total_users' => User::count(),
             'admin_users' => User::where('user_type', 'admin')->count(),
             'regular_users' => User::where('user_type', 'user')->count(),
+            'active_users' => User::where('status', 'active')->count(),
+            'inactive_users' => User::where('status', 'inactive')->count(),
+            'banned_users' => User::where('status', 'banned')->count(),
             'users_with_trips' => User::has('trips')->count(),
             'recent_users' => User::where('created_at', '>=', now()->subDays(30))->count(),
         ];

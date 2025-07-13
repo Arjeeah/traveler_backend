@@ -38,6 +38,18 @@ class AuthController extends Controller
             ]);
         }
 
+        // Check user status
+        if ($user->status !== 'active') {
+            $statusMessages = [
+                'inactive' => 'Your admin account is currently inactive. Please contact support.',
+                'banned' => 'Your admin account has been banned. Please contact support.',
+            ];
+
+            throw ValidationException::withMessages([
+                'email' => [$statusMessages[$user->status] ?? 'Your admin account access has been restricted.'],
+            ]);
+        }
+
         // Create token for the admin user
         $token = $user->createToken('admin_auth_token')->plainTextToken;
 
@@ -68,4 +80,5 @@ class AuthController extends Controller
     {
         return new UserResource($request->user());
     }
+
 }
