@@ -76,6 +76,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // Prevent banning oneself
+        if ($request->status === 'banned' && auth()->id() === $user->id) {
+            return response()->json([
+                'message' => 'You cannot ban yourself'
+            ], 422);
+        }
+
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'email' => ['sometimes', 'required', 'email', Rule::unique('users')->ignore($user->id)],
