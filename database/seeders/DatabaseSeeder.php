@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             AreaSeeder::class,
             TripSeeder::class,
+            TripAreaSeeder::class,
         ]);
     }
 }
