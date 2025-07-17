@@ -62,6 +62,7 @@ class TripController extends Controller
         // Load all relationships
         $trip->load([
             'city.country',
+            'city.areas',
             'areas' => function ($query) {
                 $query->orderBy('trip_areas.order');
             },

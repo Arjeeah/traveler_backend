@@ -19,7 +19,6 @@ use App\Http\Controllers\User\BudgetController;
 // Admin Routes
 Route::prefix('admin')->group(function () {
 
-    Route::post('register', [App\Http\Controllers\Admin\AuthController::class, 'register']);
     Route::post('login', [App\Http\Controllers\Admin\AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum', 'admin'])->group(function () {
@@ -33,7 +32,7 @@ Route::prefix('admin')->group(function () {
         // User Management
         Route::get('users/stats', [UserController::class, 'stats']);
         Route::apiResource('users', UserController::class);
-       
+
 
         // Country Management
         Route::apiResource('countries', CountryController::class);
