@@ -13,12 +13,16 @@ use App\Http\Controllers\User\TripController as UserTripController;
 use App\Http\Controllers\User\TripAreaController;
 use App\Http\Controllers\User\TaskController;
 use App\Http\Controllers\User\BudgetController;
+use App\Http\Controllers\User\UserController as UserProfileController;
+
+
 
 
 
 // Admin Routes
 Route::prefix('admin')->group(function () {
 
+    Route::post('register', [App\Http\Controllers\Admin\AuthController::class, 'register']);
     Route::post('login', [App\Http\Controllers\Admin\AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum', 'admin'])->group(function () {
@@ -61,7 +65,8 @@ Route::prefix('user')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::get('me', [AuthController::class, 'me']);
+        Route::get('me', [UserProfileController::class, 'me']);
+        Route::put('me', [UserProfileController::class, 'update']);
 
         Route::get('countries', [UserCountryController::class, 'index']);
 
